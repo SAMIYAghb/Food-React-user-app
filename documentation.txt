@@ -1,0 +1,65 @@
+figma
+https://www.figma.com/file/YausZ1ifm4F8tbA1pbDFCm/Task1%2FLanding-Page?type=design&node-id=0-1&mode=design&t=Fv9UzssPcj7bBQZf-0
+
+swagger:
+https://upskilling-egypt.com/docs
+
+
+superAdmin identifiant:
+nadia.mohamed.taha166@gmail.com
+@Upskilling123!
+
+
+
+
+superAdmin identifiant:
+samii-1989@live.com
+Samiya1234@
+
+user
+samiya2
+samiya@hotmail.fr
+Samiya1234@
+
+admin 
+upskilling.eg1@gmail.com
+Admin@123
+
+**********Explications********
+login/ logOut/reset password:
+1-setup UI (design)
+2-validation 
+3-API integration 
+
+**validation: we use react-hook-form (we can use yup, joi, zod,,,)
+**API integration: we use swagger to test the API 
+
+encoding and decoding Token:
+login => call api => set Token in local storage 
+=> decode token =>navigate to home (code in login and app )
+
+***Auth guard : make the ProtectedRoute
+
+
+************a retenir*******************
+chaque API apres avoir fait Login,
+ le backend attend toujours un Token
+ pour mieu comprendre : 
+ on consédère que le backend est une cinéma
+  et le Token c'est le ticket
+  donc pour accéder au cinéma il te faut un tiket ^_^
+ 
+ **ay API ba3d mabti3mil Login,
+ El backend Biyistana minik Token 
+ ***************************************
+
+ Pour tester data swagger API:
+ connecter sur login sur swager avec les identifiants admin
+  => copier le token=> 
+ cliquer sur le boutton authorize en haut et coller le token dans le champs
+ value => 
+ là tu est autorisé a ajouter une category par 
+ exemple ou un usertc
+
+
+

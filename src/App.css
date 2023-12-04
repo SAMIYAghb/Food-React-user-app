@@ -1,0 +1,46 @@
+.auth-container{
+  background-image: url('assets/images/hero.png'); 
+  background-size: cover;
+  background-position: 100% 100%;
+}
+.bg-overlay{
+  background: linear-gradient(to left, rgba(0,0,0,0.4), rgba(47,140,51,0.7));
+}
+.sidebar-cont{
+  background-color: #1f263e;
+  border-radius: 0 4rem 0 0 ;
+}
+.sidebar-container .ps-sidebar-container{
+  background-color: #1f263e;
+  color: #fff;
+  height: 100vh;
+  border-radius: 0 4rem 0 0 ;
+}
+.sidebar-container .ps-sidebar-container .ps-menu-button:hover{
+  background-color: rgba(47,140,51,0.7);
+}
+.modal-header{
+  border-bottom: none !important;
+}
+.bg-header{
+  background-image: url('assets/images/header-bg-svg.svg');
+  border-radius: 20px;
+  color: #fff;
+  background-size: cover;
+  background-position: 100% 100%;
+}
+.navbar-bg{
+  background-color:#efefef ;
+}
+.content{
+  background-color: rgba(240, 255, 239, 1);
+}
+.img-container{
+  width: 80px;
+}
+.pag-clic{
+  cursor: pointer;
+}
+.icon-img-side{
+  width: 130px;
+}
