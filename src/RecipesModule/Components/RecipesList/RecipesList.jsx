@@ -1,17 +1,14 @@
-import Header from "../../../SharedModule/Components/Header/Header";
-import Modal from "react-bootstrap/Modal";
-import { useForm } from "react-hook-form";
-import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import {ToastContainer } from "react-toastify";
-import nodata from "../../../assets/images/nodata.png";
-import Nodata from "./../../../SharedModule/Components/Nodata/Nodata";
-import defaultrecipeImg from "../../../assets/images/1.webp";
+import { useContext, useEffect, useState } from "react";
+import Modal from "react-bootstrap/Modal";
+import { ToastContainer } from "react-toastify";
 import { AuthContext } from "../../../Context/AuthContext";
-import { ToastContext } from './../../../Context/ToastContext';
+import Header from "../../../SharedModule/Components/Header/Header";
+import { default as defaultrecipeImg, default as noRecipeImg } from "../../../assets/images/1.webp";
+import { ToastContext } from "./../../../Context/ToastContext";
+import Nodata from "./../../../SharedModule/Components/Nodata/Nodata";
 
-
-const RecipesList = ({ title, paragraph }) => {
+const RecipesList = () => {
   let { requestHeaders, baseUrl } = useContext(AuthContext);
   let { getToastValue } = useContext(ToastContext);
 
@@ -28,82 +25,20 @@ const RecipesList = ({ title, paragraph }) => {
   const [tagsList, setTagsList] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
   // const [isLoading, setIsLoading] = useState(true);
-  const [recipe, setRecipe] = useState();
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm();
-
-  const appendToFormData = (data) => {
-    const formData = new FormData();
-    formData.append("name", data["name"]);
-    formData.append("price", data["price"]);
-    formData.append("description", data["description"]);
-    formData.append("tagId", data["tagId"]);
-    formData.append("categoriesIds", data["categoriesIds"]);
-    formData.append("recipeImage", data["recipeImage"][0]);
-    return formData;
-  };
+  const [recipeDetails, setRecipeDetails] = useState({});
 
   // Modal
-  // const [show, setShow] = useState(false);
-  // const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
   const [modalState, setModalState] = useState("close");
-  const showAddModal = () => {
-    getTagsList();
-    getCategoriesList();
 
-    setValue("name", null);
-    setValue("price", null);
-    setValue("description", null);
-    setValue("tagId", null);
-    setValue("categoriesIds", null);
-    setModalState("add-modal");
-  };
-  const showDeleteModal = (id) => {
+  const showViewModal = (id) => {
     // alert(id);
     setItemId(id);
-    setModalState("delete-modal");
+    getRecipeDetails(id);
+    setModalState("view-modal");
   };
-  const showUpdateModal = (item) => {
-    // console.log(item, "updated from showUpdateModal");
-    setModalState("update-modal");
-    setItemId(item.id);
-    setRecipe(item);
-    setValue("name", item.name);
-    setValue("price", item.price);
-    setValue("description", item.description);
-    setValue("tagId", item.tag.id);
-    setValue("categoriesIds", item.category[0].id);
-    // setValue("recipeImage", item?.imagePath);
-  };
+
   const handleClose = () => setModalState("close");
   // Modal
-
-  const onSubmit = async (data) => {
-    // console.log(data);
-    const addFormData = appendToFormData(data);
-
-    await axios
-      .post(`${baseUrl}Recipe`, addFormData, {
-        headers: {
-          requestHeaders,
-        },
-      })
-      .then((response) => {
-        handleClose();
-        getRecipesList();
-        // console.log(response, 'recipe');
-        getToastValue("success", "Recipe added successfully");
-      })
-      .catch((error) => {
-        console.log(error);
-        getToastValue("error", "Error");
-      });
-  };
 
   const getTagsList = async () => {
     await axios
@@ -165,44 +100,6 @@ const RecipesList = ({ title, paragraph }) => {
       });
   };
 
-  const deleteRecipe = async (itemId) => {
-    await axios
-      .delete(`${baseUrl}Recipe/${itemId}`, {
-        headers: {
-          requestHeaders,
-        },
-      })
-      .then((response) => {
-        // console.log(response);
-        handleClose();
-        getRecipesList();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const updateRecipe = async (data) => {
-    // console.log(data);
-    const updateFormData = appendToFormData(data);
-
-    await axios
-      .put(`${baseUrl}Recipe/${itemId}`, updateFormData, {
-        headers: {
-          requestHeaders,
-        },
-      })
-      .then((response) => {
-        // console.log(response);
-        getToastValue("success", "Recipe Updated successfully");
-        handleClose();
-        getRecipesList();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   // reel time search filtration
   const getNameValue = (input) => {
     // console.log(input.target.value);
@@ -224,6 +121,46 @@ const RecipesList = ({ title, paragraph }) => {
     //selectedTagId, select.target.value pour faire le filtre par category
   };
   // end reel time search filtration
+
+  const getRecipeDetails = async (id) => {
+    await axios
+      .get(`${baseUrl}Recipe/${id}`, {
+        headers: {
+          requestHeaders,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        setRecipeDetails(response.data);
+        // handleClose();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const addToFavorite = async () => {
+    await axios
+      .post(`${baseUrl}userRecipe`
+      , {
+        recipeId: itemId,
+      }
+      , {
+        headers: {
+          requestHeaders,
+        },
+      })
+      .then((response) => {
+        // console.log(response);
+        getToastValue("success", "Recipe added to favorite successfully");
+        handleClose();
+      })
+      .catch((error) => {
+        console.log(error);
+        getToastValue("error", "Error");
+      });
+  };
+
   useEffect(() => {
     getRecipesList(1);
     getTagsList();
@@ -240,307 +177,55 @@ const RecipesList = ({ title, paragraph }) => {
         }
       />
 
-      {/* modal update recipe*/}
+      {/* modal View recipe*/}
       <Modal
-        show={modalState === "update-modal"}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Body>
-          <Modal.Header closeButton>
-            <h3>Update Recipe</h3>
-          </Modal.Header>
-          <p className="text-muted">Welcome Back! Please enter your details</p>
-          <form onSubmit={handleSubmit(updateRecipe)}>
-            <div className="form-group my-3">
-              <input
-                {...register("name", { required: true })}
-                type="text"
-                placeholder="Recipe Name"
-                className="form-control"
-              />
-              {errors.name && errors.name.type === "required" && (
-                <span className="text-danger ">Recipe name is required</span>
-              )}
-            </div>
-
-            <div className="form-group my-3">
-              <input
-                {...register("price", { required: true })}
-                type="number"
-                placeholder="Price"
-                className="form-control"
-              />
-              {errors.price && errors.price.type === "required" && (
-                <span className="text-danger ">Recipe price is required</span>
-              )}
-            </div>
-
-            <div className="form-group my-3">
-              <textarea
-                {...register("description", { required: true })}
-                type="text"
-                placeholder="Recipe description"
-                className="form-control"
-              />
-              {errors.description && errors.description.type === "required" && (
-                <span className="text-danger ">
-                  Recipe description is required
-                </span>
-              )}
-            </div>
-
-            <select
-              {...register("tagId", { required: true, valueAsNumber: true })}
-              aria-label="Default select example"
-              type="number"
-              className="form-select"
-            >
-              <option value="" className="text-muted">
-                Select tag
-              </option>
-              {tagsList?.map((tag) => (
-                <>
-                  <option key={tag.id} value={tag.id}>
-                    {tag.name}
-                  </option>
-                </>
-              ))}
-            </select>
-            {errors.tagId && errors.tagId.type === "required" && (
-              <span className="text-danger ">tagId is required</span>
-            )}
-
-            <select
-              {...register("categoriesIds", {
-                required: true,
-                valueAsNumber: true,
-              })}
-              aria-label="Default select example"
-              type="number"
-              className="form-select mt-3"
-            >
-              <option value="" className="text-muted">
-                Select category
-              </option>
-              {categoriesList?.map((category) => (
-                <>
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                </>
-              ))}
-            </select>
-            {errors.categoriesIds &&
-              errors.categoriesIds.type === "required" && (
-                <span className="text-danger ">Category ID is required</span>
-              )}
-
-            <div className="mb-3">
-              <label htmlFor="formFile" className="form-label mt-3">
-                Choose a Item Image to Upload:
-              </label>
-              <input
-                {...register("recipeImage")}
-                className="form-control"
-                type="file"
-                id="formFile"
-              />
-              <div className="text-center my-3">
-                <img
-                  src={imgUrl + recipe?.imagePath}
-                  alt="recipe-image"
-                  className="w-25 img-fluid "
-                />
-              </div>
-            </div>
-
-            <div className="form-group my-3 text-end">
-              <button
-                onClick={handleClose}
-                className="btn btn-outline-danger mx-3"
-              >
-                Cancel
-              </button>
-              <button type="submit" className="btn btn-success ">
-                Save
-              </button>
-            </div>
-          </form>
-        </Modal.Body>
-      </Modal>
-      {/*end modal  update recipe*/}
-      {/* modal Add New recipe*/}
-      <Modal
-        show={modalState === "add-modal"}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Body>
-          <Modal.Header closeButton>
-            <h3>Add new Recipe</h3>
-          </Modal.Header>
-          <p className="text-muted">Welcome Back! Please enter your details</p>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="form-group my-3">
-              <input
-                {...register("name", { required: true })}
-                type="text"
-                placeholder="Recipe Name"
-                className="form-control"
-              />
-              {errors.name && errors.name.type === "required" && (
-                <span className="text-danger ">Recipe name is required</span>
-              )}
-            </div>
-
-            <div className="form-group my-3">
-              <input
-                {...register("price", { required: true })}
-                type="number"
-                placeholder="Price"
-                className="form-control"
-              />
-              {errors.price && errors.price.type === "required" && (
-                <span className="text-danger ">Recipe price is required</span>
-              )}
-            </div>
-
-            <div className="form-group my-3">
-              <textarea
-                {...register("description", { required: true })}
-                type="text"
-                placeholder="Recipe description"
-                className="form-control"
-              />
-              {errors.description && errors.description.type === "required" && (
-                <span className="text-danger ">
-                  Recipe description is required
-                </span>
-              )}
-            </div>
-
-            <select
-              {...register("tagId", { required: true, valueAsNumber: true })}
-              aria-label="Default select example"
-              type="number"
-              className="form-select"
-            >
-              <option value="" className="text-muted">
-                Select tag
-              </option>
-              {tagsList?.map((tag) => (
-                <>
-                  <option key={tag.id} value={tag.id}>
-                    {tag.name}
-                  </option>
-                </>
-              ))}
-            </select>
-            {errors.tagId && errors.tagId.type === "required" && (
-              <span className="a">Tag is required</span>
-            )}
-
-            <select
-              {...register("categoriesIds", {
-                required: true,
-                valueAsNumber: true,
-              })}
-              aria-label="Default select example"
-              type="number"
-              className="form-select mt-3"
-            >
-              <option value="" className="text-muted">
-                Select category
-              </option>
-              {categoriesList?.map((category) => (
-                <>
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                </>
-              ))}
-            </select>
-            {errors.categoriesIds &&
-              errors.categoriesIds.type === "required" && (
-                <span className="text-danger ">Category is required</span>
-              )}
-
-            <div className="mb-3">
-              <label htmlFor="formFile" className="form-label mt-3">
-                Choose a Item Image to Upload:
-              </label>
-              <input
-                {...register("recipeImage")}
-                className="form-control"
-                type="file"
-                id="formFile"
-              />
-            </div>
-            {errors.recipeImage && errors.recipeImage.type === "required" && (
-              <span className="text-danger ">Recipe image is required</span>
-            )}
-
-            <div className="form-group my-3 text-end">
-              <button
-                onClick={handleClose}
-                className="btn btn-outline-danger mx-3"
-              >
-                Cancel
-              </button>
-              <button type="submit" className="btn btn-success ">
-                Save
-              </button>
-            </div>
-          </form>
-        </Modal.Body>
-      </Modal>
-      {/*end modal  Add New recipe*/}
-      {/* modal delete recipe*/}
-      <Modal
-        show={modalState === "delete-modal"}
+        show={modalState === "view-modal"}
         onHide={handleClose}
         backdrop="static"
         keyboard={false}
       >
         <Modal.Body>
           <Modal.Header closeButton></Modal.Header>
-          <div className="text-center">
-            <img src={nodata} alt="dalate-img" className="w-50" />
-            <h3>Delete This Recipe?</h3>
-            <p className="text-muted">
-              are you sure you want to delete this item ? if you are sure just
-              click on delete it
-            </p>
+          <div>
+            <h2 className="text-center">Recipe details</h2>
+            <div className="text-center">
+              {recipeDetails?.imagePath ? (
+                <img
+                  src={imgUrl + recipeDetails?.imagePath}
+                  alt="recipe-img"
+                  className="w-50 mt-3"
+                />
+              ) : (
+                <img src={noRecipeImg} alt="recipe-img" className="w-50 mt-3" />
+              )}
+              <h3 className="my-3">{recipeDetails?.name}</h3>
+              <h4 className="">{recipeDetails?.price} $</h4>
+            </div>
+
+            <p className="border p-2">Description: {recipeDetails?.description}</p>
+            <div className="border mb-3">
+              <p className=" p-2 ">Tag: {recipeDetails?.tag?.name}</p>
+              {/* {recipeDetails?.category[0].name ? <p className=" p-2">Category: {recipeDetails?.category[0]?.name}</p> : ""} */}
+              
+            </div>
             <div className="text-end">
               <button
                 onClick={() => {
-                  deleteRecipe(itemId);
+                  addToFavorite
                 }}
-                className="btn btn-outline-danger w-50 "
+                className="btn btn-outline-success w-50 "
               >
-                Delete this Recipe
+                Add to favorite list
               </button>
             </div>
           </div>
         </Modal.Body>
       </Modal>
-      {/*end modal delete recipe*/}
+      {/*end modal View recipe*/}
 
       <div className="row align-items-center justify-content-between rounded-3 p-4">
-        <div className="col-md-6">
-          <h3>Recipe Table Details</h3>
-          <p>You can check all details</p>
-        </div>
-        <div className="col-md-6 text-end">
-          <button onClick={showAddModal} className="btn btn-success px-5 ">
-            Add New Recipe
-            <i className=" px-2 fa fa-arrow-right" aria-hidden="true"></i>
-          </button>
-        </div>
-
+        <h3>Recipe Table Details</h3>
+        <p>You can check all details</p>
         <div className="">
           {/* Filtration */}
           <div className="row">
@@ -629,15 +314,9 @@ const RecipesList = ({ title, paragraph }) => {
                           <td>
                             <i
                               onClick={() => {
-                                showUpdateModal(recipe);
+                                showViewModal(recipe.id);
                               }}
-                              className="fa fa-edit text-warning mx-5"
-                            ></i>
-                            <i
-                              onClick={() => {
-                                showDeleteModal(recipe.id);
-                              }}
-                              className="fa fa-trash text-danger"
+                              className="fa fa-eye text-success mx-5"
                             ></i>
                           </td>
                         </tr>

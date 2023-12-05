@@ -2,15 +2,18 @@
 import Header from "../../../SharedModule/Components/Header/Header"
 import { Link } from 'react-router-dom';
 // import Loader from "../../../SharedModule/Components/Loader/Loader";
+import { useContext } from "react";
+import { AuthContext } from './../../../Context/AuthContext';
 
 
 
 
-const Home = ({title, paragraph}) => {
+const Home = () => {
+  let { userData } = useContext(AuthContext);
   return (
     <>
     <Header 
-    title={'Welcome upskilling!'}
+    title={`Welcome ${userData.userName}`}
      paragraph={'This is a welcoming screen for the entry of the application , you can now see the options'} />
     {/* home content */}
       <div className="content row mx-4 align-items-center justify-content-between rounded-3 p-4">
