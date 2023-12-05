@@ -1,13 +1,16 @@
 import logo from '../../../assets/images/logo4-3.png';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer} from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from './../../../Context/AuthContext';
+import { ToastContext } from "./../../../Context/ToastContext";
 
 const ResetPass = () => {
   let { baseUrl } = useContext(AuthContext);
+  let { getToastValue } = useContext(ToastContext);
+
     const navigate = useNavigate();
     const {
         register, //contient the data of the form
@@ -20,31 +23,13 @@ const ResetPass = () => {
         await axios
         .post(`${baseUrl}Users/Reset`, data)        
         .then((response) => {
-          console.log(response);
-            toast.success("Password changed successfully",{
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: "undefined",
-              theme: "colored"
-            });         
+          // console.log(response);
+          getToastValue("success", "Password changed successfully");    
           navigate('/login');
          })
         .catch((error)=>{
             console.log(error);
-            toast.error(error.response.data.message, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: "undefined",
-                theme: "colored"
-              }); 
+            getToastValue("error", error.response.data.message);
         });  
     }
   return (

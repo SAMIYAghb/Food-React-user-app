@@ -1,13 +1,31 @@
 
+import { createContext } from 'react';
+import { toast } from 'react-toastify';
 
 
-// toast.success("Password change successfully",{
-//     position: "top-right",
-//     autoClose: 3000,
-//     hideProgressBar: false,
-//     closeOnClick: true,
-//     pauseOnHover: true,
-//     draggable: true,
-//     progress: "undefined",
-//     theme: "colored"
-//   });
+export let ToastContext = createContext(0);
+
+export default function ToastContextProvider(props){
+  
+    let getToastValue =(type, message)=>{
+  return toast[type](message,{
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: "undefined",
+        theme: "colored"
+      })
+    
+    }
+    
+    return(
+    <ToastContext.Provider value={{getToastValue}}>
+        {props.children}
+    </ToastContext.Provider>
+    )
+}
+
+

@@ -9,20 +9,20 @@ export default function AuthContextProvider(props) {
   const [userData, setUserData] = useState(null);
   // console.log(userData);
   let requestHeaders = {
-    Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+    Authorization: `Bearer ${localStorage.getItem("userToken")}`,
   }
   const baseUrl = 'https://upskilling-egypt.com/api/v1/';
 
   let saveUserData = () => {
-    const adminToken = localStorage.getItem("adminToken");
-    const decodedAdminToken = jwtDecode(adminToken); // decode your token
+    const userToken = localStorage.getItem("userToken");
+    const decodedAdminToken = jwtDecode(userToken); // decode your token
     // console.log(decodedAdminToken);
     setUserData(decodedAdminToken);
   };
 
   //handle the refresh problem(quant on fait refrech le userData = null mais avec le useEffect on obtien les detail de userData)
   useEffect(() => {
-    if (localStorage.getItem("adminToken")) {
+    if (localStorage.getItem("userToken")) {
       saveUserData();
     }
   }, []);

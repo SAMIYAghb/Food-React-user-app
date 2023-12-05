@@ -19,7 +19,7 @@ import { AuthContext } from './Context/AuthContext';
 
 
 function App() {
-  let {userData, saveUserData} = useContext(AuthContext);
+  let {userData, saveUserData} = useContext(AuthContext)
 
   const routes = createBrowserRouter([     
     {
@@ -46,8 +46,8 @@ function App() {
       element: <AuthLayout/>,
       errorElement: <NotFound/>,
       children:[
-        {index: true, element:<Login saveUserData={saveUserData}/>},
-        {path: "login", element:<Login saveUserData={saveUserData}/>},
+        {index: true, element:<Login/>},
+        {path: "login", element:<Login/>},
         {path: "change-pass",element:<ChangePass/>},
         {path: "request-reset-pass",element:<RequestResetPass/>},
         {path: "reset-pass",element:<ResetPass/>},

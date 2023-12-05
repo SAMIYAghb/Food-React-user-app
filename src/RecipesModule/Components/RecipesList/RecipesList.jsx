@@ -3,15 +3,17 @@ import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
+import {ToastContainer } from "react-toastify";
 import nodata from "../../../assets/images/nodata.png";
 import Nodata from "./../../../SharedModule/Components/Nodata/Nodata";
 import defaultrecipeImg from "../../../assets/images/1.webp";
 import { AuthContext } from "../../../Context/AuthContext";
+import { ToastContext } from './../../../Context/ToastContext';
 
 
 const RecipesList = ({ title, paragraph }) => {
   let { requestHeaders, baseUrl } = useContext(AuthContext);
+  let { getToastValue } = useContext(ToastContext);
 
   const imgUrl = "https://upskilling-egypt.com/";
   const [itemId, setItemId] = useState(0);
@@ -95,19 +97,11 @@ const RecipesList = ({ title, paragraph }) => {
         handleClose();
         getRecipesList();
         // console.log(response, 'recipe');
-        toast.success("Recipe added successfully", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: "undefined",
-          theme: "colored",
-        });
+        getToastValue("success", "Recipe added successfully");
       })
       .catch((error) => {
         console.log(error);
+        getToastValue("error", "Error");
       });
   };
 
@@ -200,16 +194,7 @@ const RecipesList = ({ title, paragraph }) => {
       })
       .then((response) => {
         // console.log(response);
-        toast.success("Recipe Updated successfully", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: "undefined",
-          theme: "colored",
-        });
+        getToastValue("success", "Recipe Updated successfully");
         handleClose();
         getRecipesList();
       })

@@ -19,7 +19,7 @@ const SideBar = () => {
     setIsCollapsed(!isCollapsed);
   };
   let logOut = ()=>{
-    localStorage.removeItem('adminToken');
+    localStorage.removeItem('userToken');
     Navigate('/login');
   }
  
