@@ -1,12 +1,14 @@
 import logo from '../../../assets/images/logo4-3.png';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { baseUrl } from './../../../Constants/ApiUrl';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { useContext } from 'react';
+import { AuthContext } from './../../../Context/AuthContext';
 
 
 const RequestResetPass = () => {
+  let { baseUrl } = useContext(AuthContext);
     const navigate = useNavigate();
     const {
         register, 
@@ -17,7 +19,7 @@ const RequestResetPass = () => {
     const onSubmit = async(data) => {
         console.log(data)
         await axios
-          .post(baseUrl + "Users/Reset/Request", data)
+          .post(`${baseUrl}Users/Reset/Request`, data)
           .then((response) => {
             console.log(response);
             navigate('/reset-pass');

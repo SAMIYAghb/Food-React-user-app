@@ -1,11 +1,13 @@
 import logo from '../../../assets/images/logo4-3.png';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { baseUrl } from './../../../Constants/ApiUrl';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from './../../../Context/AuthContext';
 
 const ResetPass = () => {
+  let { baseUrl } = useContext(AuthContext);
     const navigate = useNavigate();
     const {
         register, //contient the data of the form
@@ -16,10 +18,10 @@ const ResetPass = () => {
     const onSubmit = async(data) => {
         console.log(data)
         await axios
-        .post(baseUrl + "Users/Reset", data)        
+        .post(`${baseUrl}Users/Reset`, data)        
         .then((response) => {
           console.log(response);
-            toast.success("Password change successfully",{
+            toast.success("Password changed successfully",{
               position: "top-right",
               autoClose: 3000,
               hideProgressBar: false,

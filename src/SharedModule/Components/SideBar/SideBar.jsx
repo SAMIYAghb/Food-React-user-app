@@ -4,6 +4,7 @@ import { Menu, MenuItem, Sidebar } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
 import logoUser from '../../../assets/images/logoUser.png';
 import ChangePass from './../../../AuthModule/Components/ChangePass/ChangePass';
+import { Navigate } from 'react-router-dom';
 
 const SideBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -12,11 +13,15 @@ const SideBar = () => {
   // modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
+  const handleShow = () => setShow(true);
   // modal
   const handleToggle = () => {
     setIsCollapsed(!isCollapsed);
   };
+  let logOut = ()=>{
+    localStorage.removeItem('adminToken');
+    Navigate('/login');
+  }
  
   return (
     <div className="sidebar-container">
@@ -53,6 +58,14 @@ const SideBar = () => {
           Recipes</MenuItem>
           <MenuItem icon={<i className='fa fa-heart' aria-hidden='true'></i>} component={<Link to="/dashboard/favorites" />}> 
           Favorites</MenuItem>
+          <MenuItem 
+          onClick={handleShow}
+          icon={<i className='fa fa-unlock-keyhole' aria-hidden='true'></i>} 
+          // component={<Link to="/change-pass" />}
+          > 
+          Change Password </MenuItem>
+          <MenuItem onClick={logOut}
+          icon={<i className='fa fa-right-from-bracket' aria-hidden='true'></i>} component={<Link to="/login" />}> Logout</MenuItem>
         </Menu>
     </Sidebar>
     </div>

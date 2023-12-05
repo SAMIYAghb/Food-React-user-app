@@ -1,15 +1,16 @@
 import axios from 'axios';
 import logo from '../../../assets/images/logo4-3.png';
 import { useForm } from "react-hook-form"
-// import { baseUrl } from '../../../Constants/ApiUrl';
 import { useNavigate, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { baseUrl } from './../../../Constants/ApiUrl';
+import { useContext } from 'react';
+import { AuthContext } from './../../../Context/AuthContext';
 
 
-const Login = ({saveUserData}) => {
- 
+const Login = () => {
+  let { saveUserData, baseUrl  } = useContext(AuthContext);
+  
   const navigate = useNavigate();
   const {
     register, //contient the data of the form
@@ -23,7 +24,7 @@ const Login = ({saveUserData}) => {
     // console.log(watch("email"))
     // console.log(watch("password"))
     await axios
-    .post(baseUrl + "Users/Login", data)
+    .post(`${baseUrl}Users/Login`, data)
     .then((response) => {
 
       setTimeout(()=>{

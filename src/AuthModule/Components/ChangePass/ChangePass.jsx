@@ -1,12 +1,14 @@
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import logo from '../../../assets/images/logo4-3.png';
-import { baseUrl } from '../../../Constants/ApiUrl';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useContext } from 'react';
+import { AuthContext } from './../../../Context/AuthContext';
 
 const ChangePass = ({handleClose}) => {
+  let { requestHeaders, baseUrl  } = useContext(AuthContext);
   const navigate = useNavigate();
   const {
     register, //contient the data of the form
@@ -17,9 +19,9 @@ const ChangePass = ({handleClose}) => {
   const onSubmit = async(data) => {
     // console.log(data)
     await axios
-    .put(baseUrl + "Users/ChangePassword", data,{
+    .put(`${baseUrl}Users/ChangePassword`, data,{
       headers:{
-        Authorization: `Bearer ${localStorage.getItem("adminToken")}`
+        requestHeaders,
       }
     })
     .then((response) => {
