@@ -4,7 +4,7 @@ import Navbar from "./../Navbar/Navbar";
 import Header from "./../Header/Header";
 // import { useLocation } from 'react-router-dom';
 
-const MasterLayout = ({ adminData }) => {
+const MasterLayout = ({ userData }) => {
   // const location = useLocation();
   // console.log(location);
 
@@ -15,7 +15,7 @@ const MasterLayout = ({ adminData }) => {
           <SideBar />
         </div>
         <div className="w-100">
-          <Navbar adminData={adminData} />
+          <Navbar userData={userData} />
           <div className="container-fluid">
             <Outlet />
           </div>

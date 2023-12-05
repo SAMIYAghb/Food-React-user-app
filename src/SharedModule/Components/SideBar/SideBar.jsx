@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Menu, MenuItem, Sidebar } from 'react-pro-sidebar';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import logoUser from '../../../assets/images/logoUser.png';
 import ChangePass from './../../../AuthModule/Components/ChangePass/ChangePass';
 
 const SideBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const navigate = useNavigate();
+
 
   // modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  // const handleShow = () => setShow(true);
   // modal
   const handleToggle = () => {
     setIsCollapsed(!isCollapsed);

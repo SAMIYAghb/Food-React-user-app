@@ -19,19 +19,19 @@ import NotFound from './SharedModule/Components/NotFound/NotFound';
 
 
 function App() {
-  const [adminData, setAdminData] = useState(null);
-// console.log(adminData);
-  let saveAdminData =() => {
+  const [userData, setUserData] = useState(null);
+  // console.log(userData);
+  let saveUserData =() => {
       const adminToken=  localStorage.getItem('adminToken');
       const decodedAdminToken = jwtDecode(adminToken); // decode your token
       // console.log(decodedAdminToken);
-      setAdminData(decodedAdminToken);
+      setUserData(decodedAdminToken);
   }
 
-  //handle the refresh problem(quant on fait refrech le adminData = null mais avec le useEffect on obtien les detail de adminData)
+  //handle the refresh problem(quant on fait refrech le userData = null mais avec le useEffect on obtien les detail de userData)
   useEffect(()=>{
     if(localStorage.getItem("adminToken")){
-      saveAdminData();
+      saveUserData();
     }
   },[]) 
 
@@ -39,13 +39,13 @@ function App() {
     {
       path:"dashboard",
       element:(
-          <ProtectedRoute adminData={adminData}>
-            <MasterLayout adminData={adminData} />
+          <ProtectedRoute userData={userData}>
+            <MasterLayout userData={userData} />
           </ProtectedRoute>
       ),
       errorElement: <NotFound/>,
       children:[
-        {index: true, element:<Home adminData={adminData}/>},      
+        {index: true, element:<Home userData={userData}/>},      
         {path: "recipes", element:<RecipesList/>},
         {path: "favorites", element:<Favorites/>},
       ]
@@ -53,15 +53,15 @@ function App() {
     {
       path:"/",
     //   element: (
-    //     // <ProtectedRoute adminData={adminData}>
+    //     // <ProtectedRoute userData={userData}>
     //       <AuthLayout/>   
     //     // </ProtectedRoute>
     // ),
       element: <AuthLayout/>,
       errorElement: <NotFound/>,
       children:[
-        {index: true, element:<Login saveAdminData={saveAdminData}/>},
-        {path: "login", element:<Login saveAdminData={saveAdminData}/>},
+        {index: true, element:<Login saveUserData={saveUserData}/>},
+        {path: "login", element:<Login saveUserData={saveUserData}/>},
         {path: "change-pass",element:<ChangePass/>},
         {path: "request-reset-pass",element:<RequestResetPass/>},
         {path: "reset-pass",element:<ResetPass/>},
