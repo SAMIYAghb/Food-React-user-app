@@ -3,12 +3,14 @@ import logo from "../../../assets/images/logo4-3.png";
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useContext } from "react";
 import { AuthContext } from "./../../../Context/AuthContext";
+import { ToastContext } from './../../../Context/ToastContext';
 
 const Register = () => {
   let { saveUserData, baseUrl } = useContext(AuthContext);
+  let { getToastValue } = useContext(ToastContext);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -20,9 +22,9 @@ const Register = () => {
     await axios
       .post(`${baseUrl}Users/Register`, data)
       .then((response) => {
-        // setTimeout(() => {
-        //   getToastValue("success", "Congratulations! You are logIn");
-        // }, 1000);
+        setTimeout(() => {
+          getToastValue("success", "Account created successfully§");
+        }, 1000);
 
         console.log(response);
         //  localStorage.setItem(
@@ -31,14 +33,14 @@ const Register = () => {
         // );
         // console.log(userToken);
         // saveUserData();
-      //   navigate("/dashboard");
+        navigate("/verify");
       })
       .catch((error) => {
         console.log(error);
-        // getToastValue("error", error.response.data.message);
+        getToastValue("error", error.response.data.message);
       });
     };
-    
+
   return (
     <div className="auth-container container-fluid">
     <ToastContainer />
@@ -60,7 +62,8 @@ const Register = () => {
                   <input
                     {...register("userName", {
                       required: true,
-                      
+                      pattern:/^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/
+
                     })}
                     type="text"
                     className="form-control"
@@ -69,8 +72,10 @@ const Register = () => {
                   {errors.userName && errors.userName.type === "required" && (
                     <span className="text-danger">userName is required</span>
                   )}
+                 {errors.userName && errors.userName.type === "pattern" && (
+                    <span className="text-danger ">The userName must contain characters and end with numbers without spaces</span>
+                  )}
                   </div>
-                  
                   <div className="form-group my-3">
                   <input
                     {...register("password", {
@@ -80,14 +85,15 @@ const Register = () => {
                     })}
                     type="password"
                     className="form-control"
-                    placeholder="Password"
+                    placeholder="password "
                   />
                   {errors.password && errors.password.type === "required" && (
-                    <span className="text-danger">Password is required</span>
+                    <span className="text-danger">password is required</span>
                   )}
                   {errors.password && errors.password.type === "pattern" && (
                     <span className="text-danger ">password is invalid</span>
                   )}
+                 
                   </div>
                   <div className="form-group my-3">
                   <input

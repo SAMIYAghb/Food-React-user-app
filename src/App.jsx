@@ -53,6 +53,7 @@ function App() {
         {path: "request-reset-pass",element:<RequestResetPass/>},
         {path: "reset-pass",element:<ResetPass/>},
         {path: "resgister",element:<Register/>},
+        {path: "verify",element:<VerifyUserAccount/>},
        
       ]
     }
