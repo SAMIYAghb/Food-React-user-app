@@ -17,7 +17,7 @@ import { AuthContext } from "../../../Context/AuthContext";
 import { ToastContext } from "../../../Context/ToastContext";
 
 const VerifyUserAccount = () => {
-    let { saveUserData, baseUrl } = useContext(AuthContext);
+    let { saveUserData, baseUrl, requestHeaders } = useContext(AuthContext);
   let { getToastValue } = useContext(ToastContext);
   const navigate = useNavigate();
 
@@ -33,6 +33,8 @@ const VerifyUserAccount = () => {
       .put(`${baseUrl}Users/verify`,{
         // email: email,
         // code: code,
+      },{
+        headers: requestHeaders,
       })
       .then((response) => {
         //   getToastValue("success", "Account created successfully. A verification code has been sent to your email address");
