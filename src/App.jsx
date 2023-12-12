@@ -15,6 +15,7 @@ import MasterLayout from './SharedModule/Components/MasterLayout/MasterLayout';
 import NotFound from './SharedModule/Components/NotFound/NotFound';
 import { useContext } from 'react';
 import { AuthContext } from './Context/AuthContext';
+import Register from './AuthModule/Components/Register/Register';
 
 
 
@@ -51,6 +52,7 @@ function App() {
         {path: "change-pass",element:<ChangePass/>},
         {path: "request-reset-pass",element:<RequestResetPass/>},
         {path: "reset-pass",element:<ResetPass/>},
+        {path: "resgister",element:<Register/>},
        
       ]
     }
