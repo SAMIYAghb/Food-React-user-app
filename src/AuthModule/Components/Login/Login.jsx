@@ -98,7 +98,7 @@ const Login = () => {
                 )}
               </div>
               <div className="form-group my-3 d-flex justify-content-between">
-                <Link to="/resgister" className="text-success text-decoration-none">Register Now?</Link>
+                <Link to="/register" className="text-success text-decoration-none">Register Now?</Link>
                 <Link to="/request-reset-pass" className="text-success text-decoration-none">
                   Forgot Password?
                 </Link>

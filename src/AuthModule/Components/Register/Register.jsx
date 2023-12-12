@@ -17,22 +17,28 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
+  const appendToFormData = (data) => {
+    const formData = new FormData();
+    formData.append("userName", data["userName"]);
+    formData.append("password", data["password"]);
+    formData.append("confirmPassword", data["confirmPassword"]);
+    formData.append("email", data["email"]);
+    formData.append("country", data["country"]);
+    formData.append("phoneNumber", data["phoneNumber"]);
+    return formData;
+  };
+
   const onSubmit = async(data) => {
     console.log(data)
+    const addFormData = appendToFormData(data);
     await axios
-      .post(`${baseUrl}Users/Register`, data)
+      .post(`${baseUrl}Users/Register`, addFormData)
       .then((response) => {
         setTimeout(() => {
           getToastValue("success", "Account created successfully§");
         }, 1000);
 
         console.log(response);
-        //  localStorage.setItem(
-        //   "userToken",
-        //   response.data.token
-        // );
-        // console.log(userToken);
-        // saveUserData();
         navigate("/verify");
       })
       .catch((error) => {

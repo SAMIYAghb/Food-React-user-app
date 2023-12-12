@@ -16,11 +16,13 @@ import NotFound from './SharedModule/Components/NotFound/NotFound';
 import { useContext } from 'react';
 import { AuthContext } from './Context/AuthContext';
 import Register from './AuthModule/Components/Register/Register';
+import VerifyUserAccount from './AuthModule/Components/VerifyUserAccount/VerifyUserAccount';
+
 
 
 
 function App() {
-  let {userData, saveUserData} = useContext(AuthContext)
+  let {userData} = useContext(AuthContext)
 
   const routes = createBrowserRouter([     
     {
@@ -52,7 +54,7 @@ function App() {
         {path: "change-pass",element:<ChangePass/>},
         {path: "request-reset-pass",element:<RequestResetPass/>},
         {path: "reset-pass",element:<ResetPass/>},
-        {path: "resgister",element:<Register/>},
+        {path: "register",element:<Register/>},
         {path: "verify",element:<VerifyUserAccount/>},
        
       ]
