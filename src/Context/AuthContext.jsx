@@ -15,9 +15,9 @@ export default function AuthContextProvider(props) {
 
   let saveUserData = () => {
     const userToken = localStorage.getItem("userToken");
-    const decodedAdminToken = jwtDecode(userToken); // decode your token
+    const decodedUserToken = jwtDecode(userToken); // decode your token
     // console.log(decodedAdminToken);
-    setUserData(decodedAdminToken);
+    setUserData(decodedUserToken);
   };
 
   //handle the refresh problem(quant on fait refrech le userData = null mais avec le useEffect on obtien les detail de userData)

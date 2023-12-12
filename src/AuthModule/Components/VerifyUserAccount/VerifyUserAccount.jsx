@@ -1,13 +1,5 @@
 
 
-// const VerifyUserAccount = () => {
-//   return (
-//     <div>VerifyUserAccount</div>
-//   )
-// }
-
-// export default VerifyUserAccount
-
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import logo from "../../../assets/images/logo4-3.png";
@@ -15,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import { useContext } from "react";
 import { AuthContext } from "../../../Context/AuthContext";
 import { ToastContext } from "../../../Context/ToastContext";
+import { useNavigate } from 'react-router-dom';
 
 const VerifyUserAccount = () => {
     let { saveUserData, baseUrl, requestHeaders } = useContext(AuthContext);
@@ -31,8 +24,8 @@ const VerifyUserAccount = () => {
         // console.log(data);
         await axios
       .put(`${baseUrl}Users/verify`,{
-        // email: email,
-        // code: code,
+        email: email,
+        code: code,
       },{
         headers: requestHeaders,
       })
