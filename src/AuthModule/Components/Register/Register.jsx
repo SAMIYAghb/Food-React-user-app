@@ -6,27 +6,25 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useContext } from "react";
 import { AuthContext } from "./../../../Context/AuthContext";
-import { ToastContext } from "./../../../Context/ToastContext";
 
 const Register = () => {
+  let { saveUserData, baseUrl } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async(data) => {
     console.log(data)
-    // console.log(watch("email"))
-    // console.log(watch("password"))
-    // await axios
-      // .post(`${baseUrl}Users/Login`, data)
-      // .then((response) => {
+    await axios
+      .post(`${baseUrl}Users/Register`, data)
+      .then((response) => {
         // setTimeout(() => {
         //   getToastValue("success", "Congratulations! You are logIn");
         // }, 1000);
 
-        // console.log(response.data.token);
+        console.log(response);
         //  localStorage.setItem(
         //   "userToken",
         //   response.data.token
@@ -34,12 +32,13 @@ const Register = () => {
         // console.log(userToken);
         // saveUserData();
       //   navigate("/dashboard");
-      // })
-      // .catch((error) => {
-        // console.log(error.response.data.message);
+      })
+      .catch((error) => {
+        console.log(error);
         // getToastValue("error", error.response.data.message);
-      // });
+      });
     };
+    
   return (
     <div className="auth-container container-fluid">
     <ToastContainer />
@@ -51,7 +50,6 @@ const Register = () => {
           </div>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            action=""
             className="m-auto w-75"
           >
             <h2>Register</h2>
@@ -65,7 +63,6 @@ const Register = () => {
                       
                     })}
                     type="text"
-                    name="userName"
                     className="form-control"
                     placeholder="userName"
                   />
@@ -82,7 +79,6 @@ const Register = () => {
                         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
                     })}
                     type="password"
-                    name="password"
                     className="form-control"
                     placeholder="Password"
                   />
@@ -95,22 +91,17 @@ const Register = () => {
                   </div>
                   <div className="form-group my-3">
                   <input
-                    {...register("confirmPassword ", {
+                    {...register("confirmPassword", {
                       required: true,
-                      pattern:
-                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
                     })}
                     type="password"
-                    name="confirmPassword "
                     className="form-control"
                     placeholder="confirmPassword "
                   />
                   {errors.confirmPassword && errors.confirmPassword.type === "required" && (
                     <span className="text-danger">confirmPassword is required</span>
                   )}
-                  {errors.confirmPassword  && errors.confirmPassword.type === "pattern" && (
-                    <span className="text-danger ">confirmPassword is invalid</span>
-                  )}
+                 
                   </div>
               </div>
               <div className="col-md-6">
@@ -122,7 +113,6 @@ const Register = () => {
                       pattern: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
                     })}
                     type="email"
-                    name="email"
                     className="form-control"
                     placeholder="Enter your E-mail"
                   />
@@ -140,7 +130,6 @@ const Register = () => {
                       required: true,
                     })}
                     type="text"
-                    name="country"
                     className="form-control"
                     placeholder="country"
                   />
@@ -155,7 +144,6 @@ const Register = () => {
                       required: true,
                     })}
                     type="text"
-                    name="phoneNumber"
                     className="form-control"
                     placeholder="phoneNumber"
                   />

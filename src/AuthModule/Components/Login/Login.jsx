@@ -68,7 +68,6 @@ const Login = () => {
                     pattern: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
                   })}
                   type="email"
-                  name="email"
                   className="form-control"
                   placeholder="Enter your E-mail"
                 />
@@ -89,7 +88,6 @@ const Login = () => {
                       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
                   })}
                   type="password"
-                  name="password"
                   className="form-control"
                   placeholder="Password"
                 />
