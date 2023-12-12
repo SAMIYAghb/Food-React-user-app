@@ -139,25 +139,25 @@ const RecipesList = () => {
       });
   };
 
-  const addToFavorite = async () => {
+  const addToFavorite = async() => {
+    // alert(' selected recipe'); 
     await axios
-      .post(`${baseUrl}userRecipe`
-      , {
+      .post(`${baseUrl}userRecipe/`,{
         recipeId: itemId,
       }
-      , {
-        headers: {
-          requestHeaders,
-        },
-      })
+      ,{
+        headers: requestHeaders,
+      }
+    )
       .then((response) => {
-        // console.log(response);
-        getToastValue("success", "Recipe added to favorite successfully");
-        handleClose();
+        console.log(response);
+    //     handleClose();
+    //     getToastValue("success", "Recipe added to favorite successfully");
+       
       })
       .catch((error) => {
         console.log(error);
-        getToastValue("error", "Error");
+    //     getToastValue("error", "Error");
       });
   };
 
@@ -210,9 +210,7 @@ const RecipesList = () => {
             </div>
             <div className="text-end">
               <button
-                onClick={() => {
-                  addToFavorite
-                }}
+                onClick={addToFavorite}
                 className="btn btn-outline-success w-50 "
               >
                 Add to favorite list
