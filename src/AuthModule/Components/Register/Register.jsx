@@ -35,7 +35,7 @@ const Register = () => {
       .post(`${baseUrl}Users/Register`, addFormData)
       .then((response) => {
         setTimeout(() => {
-          getToastValue("success", "Account created successfully§");
+          getToastValue("success", "Account created successfully! A verification code has been sent to your email address");
         }, 1000);
 
         console.log(response);

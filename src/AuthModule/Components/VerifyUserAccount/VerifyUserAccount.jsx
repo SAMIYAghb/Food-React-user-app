@@ -23,10 +23,7 @@ const VerifyUserAccount = () => {
       const onSubmit = async (data) => {
         // console.log(data);
         await axios
-      .put(`${baseUrl}Users/verify`,{
-        email: email,
-        code: code,
-      },{
+      .put(`${baseUrl}Users/verify`,data,{
         headers: requestHeaders,
       })
       .then((response) => {
@@ -35,7 +32,7 @@ const VerifyUserAccount = () => {
 
 
         console.log(response);
-        // navigate("/login");
+        navigate("/login");
       })
       .catch((error) => {
         console.log(error);
@@ -57,12 +54,25 @@ const VerifyUserAccount = () => {
               className="m-auto w-75"
             >
               <h2>Verification</h2>
+              
               <p>Enter the verification code</p>
-              <div className="form-group my-3">
+              <div className="form-group  my-3">
+                <input type="email" 
+                className="form-control"
+                placeholder="Enter your E-mail"
+                 />
+              </div>
+              <div className="form-group  my-3">
+                <input type="text" 
+                className="form-control"
+                placeholder="Enter your Verification code"
+                 />
+              </div>
+              {/* <div className="form-group my-3">
                 <input
                   {...register("email", {
                     required: true,
-                    pattern: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+                    // pattern: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
                   })}
                   type="email"
                   className="form-control"
@@ -73,11 +83,11 @@ const VerifyUserAccount = () => {
                   <span className="text-danger ">Email is required</span>
                 )}
 
-                {errors.email && errors.email.type === "pattern" && (
+                {/* {errors.email && errors.email.type === "pattern" && (
                   <span className="text-danger ">Email is invalid</span>
-                )} 
-              </div>
-              <div className="form-group my-3">
+                )}  */}
+              {/* </div>  */}
+              {/* <div className="form-group my-3">
                 <input
                   {...register("code", {
                     required: true,
@@ -90,7 +100,7 @@ const VerifyUserAccount = () => {
                 {errors.code && errors.code.type === "required" && (
                   <span className="text-danger">Verification code is required</span>
                 )}
-              </div>
+              </div> */}
               <div className="form-group my-3">
                 <button type="submit" className="btn btn-success w-100">
                   Verify
