@@ -23,9 +23,7 @@ const ChangePass = ({handleClose}) => {
     // console.log(data)
     await axios
     .put(`${baseUrl}Users/ChangePassword`, data,{
-      headers:{
-        requestHeaders,
-      }
+      headers: requestHeaders,
     })
     .then((response) => {
       console.log(response);

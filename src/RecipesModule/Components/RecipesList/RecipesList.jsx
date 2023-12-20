@@ -7,10 +7,12 @@ import Header from "../../../SharedModule/Components/Header/Header";
 import { default as defaultrecipeImg, default as noRecipeImg } from "../../../assets/images/1.webp";
 import { ToastContext } from "./../../../Context/ToastContext";
 import Nodata from "./../../../SharedModule/Components/Nodata/Nodata";
+import Loader from './../../../SharedModule/Components/Loader/Loader';
+
 
 const RecipesList = () => {
-  let { requestHeaders, baseUrl } = useContext(AuthContext);
-  let { getToastValue } = useContext(ToastContext);
+  const { requestHeaders, baseUrl } = useContext(AuthContext);
+  const { getToastValue } = useContext(ToastContext);
 
   const imgUrl = "https://upskilling-egypt.com/";
   const [itemId, setItemId] = useState(0);
@@ -24,7 +26,7 @@ const RecipesList = () => {
   const [recipesList, setRecipesList] = useState([]);
   const [tagsList, setTagsList] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [recipeDetails, setRecipeDetails] = useState({});
 
   // Modal
@@ -71,11 +73,11 @@ const RecipesList = () => {
 
   let totalPages;
   const getRecipesList = async (pageNo, name, tagId, categoryId) => {
+    setIsLoading(true);
     await axios
       .get(`${baseUrl}Recipe`, {
-        headers: {
-          requestHeaders,
-        },
+        headers:requestHeaders,
+        },{
         params: {
           pageSize: 5, //statique
           pageNumber: pageNo, //dynamique
@@ -85,6 +87,7 @@ const RecipesList = () => {
         },
       })
       .then((response) => {
+        setIsLoading(false);
         // console.log(response.data.data , 'recipesList');
         let totalPages = response.data.totalNumberOfPages; //************ */
         let arrayOfNumberOfPages = Array(response.data.totalNumberOfPages)
@@ -97,6 +100,7 @@ const RecipesList = () => {
       })
       .catch((error) => {
         console.log(error);
+        setIsLoading(false);
       });
   };
 
@@ -151,13 +155,13 @@ const RecipesList = () => {
     )
       .then((response) => {
         console.log(response);
-    //     handleClose();
-    //     getToastValue("success", "Recipe added to favorite successfully");
+        handleClose();
+        getToastValue("success", "Recipe added to favorite successfully");
        
       })
       .catch((error) => {
         console.log(error);
-    //     getToastValue("error", "Error");
+        getToastValue("error", "Error");
       });
   };
 
@@ -265,6 +269,8 @@ const RecipesList = () => {
             </div>
           </div>
           {/* End Filtration */}
+          {
+            isLoading ? ( <Loader/>):(<>
           {recipesList.length > 0 ? (
             <div className="">
               <div className="table-responsive">
@@ -370,6 +376,8 @@ const RecipesList = () => {
           ) : (
             <Nodata />
           )}
+           </>)
+          }
         </div>
       </div>
     </>
