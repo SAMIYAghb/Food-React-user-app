@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 export let AuthContext = createContext();
 
 export default function AuthContextProvider(props) {
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState();
   // console.log(userData);
   let requestHeaders = {
     Authorization: `Bearer ${localStorage.getItem("userToken")}`,
