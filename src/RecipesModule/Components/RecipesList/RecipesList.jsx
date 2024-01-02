@@ -57,10 +57,10 @@ const RecipesList = () => {
   const getCategoriesList = async () => {
     await axios
       .get(`${baseUrl}Category/?pageSize=10&pageNumber=1`, {
-        headers: {
+        headers:
           //pour obtenir les caterories on doit étre login 'authorized'
           requestHeaders,
-        },
+        
       })
       .then((response) => {
         // console.log(response.data.data, 'to get category id from recipeListe');
@@ -77,7 +77,6 @@ const RecipesList = () => {
     await axios
       .get(`${baseUrl}Recipe`, {
         headers:requestHeaders,
-        },{
         params: {
           pageSize: 5, //statique
           pageNumber: pageNo, //dynamique
@@ -90,7 +89,7 @@ const RecipesList = () => {
         setIsLoading(false);
         // console.log(response.data.data , 'recipesList');
         let totalPages = response.data.totalNumberOfPages; //************ */
-        let arrayOfNumberOfPages = Array(response.data.totalNumberOfPages)
+        let arrayOfNumberOfPages = Array(response?.data?.totalNumberOfPages)
           .fill()
           .map((_, i) => i + 1);
         setPagesArray(arrayOfNumberOfPages);
@@ -115,13 +114,13 @@ const RecipesList = () => {
   const getTagValue = (select) => {
     // console.log(select.target.value);
     setSelectedTagId(select.target.value);
-    getRecipesList(1, null, select.target.value, selectedCategoryId); //il me faut 4 argument pour la function getRecipesList
+    getRecipesList(1,  searchString, select.target.value, selectedCategoryId); //il me faut 4 argument pour la function getRecipesList
   };
 
   const getCategoryValue = (select) => {
     // console.log(select.target.value);
     setSelectedCategoryId(select.target.value);
-    getRecipesList(1, null, selectedTagId, select.target.value);
+    getRecipesList(1, searchString, selectedTagId, select.target.value);
     //selectedTagId, select.target.value pour faire le filtre par category
   };
   // end reel time search filtration
