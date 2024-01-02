@@ -4,13 +4,14 @@ import logo from '../../../assets/images/logo4-3.png';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useContext } from 'react';
+import { useContext ,useState} from 'react';
 import { AuthContext } from './../../../Context/AuthContext';
 import { ToastContext } from './../../../Context/ToastContext';
 
 const ChangePass = ({handleClose}) => {
   let { requestHeaders, baseUrl  } = useContext(AuthContext);
   let { getToastValue } = useContext(ToastContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const {
@@ -20,20 +21,23 @@ const ChangePass = ({handleClose}) => {
   } = useForm();
 
   const onSubmit = async(data) => {
+    setIsLoading(true);
     // console.log(data)
     await axios
     .put(`${baseUrl}Users/ChangePassword`, data,{
       headers: requestHeaders,
     })
     .then((response) => {
+      setIsLoading(false);
       console.log(response);
       handleClose();
       getToastValue("success", "Password change successfully");
       navigate('/login');
      })
     .catch((error)=>{
+      setIsLoading(false);
         // console.log(error);
-        getToastValue("error", error.response.data.message);
+        getToastValue("error", error?.response?.data?.message);
     });  
   }
 
@@ -82,8 +86,16 @@ const ChangePass = ({handleClose}) => {
 
                 
                 <div className="form-group my-3">
-                  <button type="submit" className="btn btn-success w-100">
-                    Change password
+                  <button type="submit" className={
+                      "btn btn-success w-100" + (isLoading ? " disabled" : " ")
+                    }
+                  >
+                    {isLoading == true ? (
+                      <i className="fas fa-spinner fa-spin"></i>
+                    ) : (
+                      " Change password"
+                    )}
+                   
                   </button>
                 </div>            
               </form>

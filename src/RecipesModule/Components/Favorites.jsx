@@ -116,10 +116,11 @@ const Favorites = () => {
       ? (<>
       {
           favList.map((favory)=>(
-          <div key={favory.id} className="position-relative col-md-4 rounded-2 border shadow p-3">
+          <div key={favory.id} className=" col-md-4">
+            <div className="position-relative  rounded-2 border shadow p-3">
             <div className="position-absolute me-0">
                 <i className="fa fa-heart fa-2x text-danger"></i>
-                </div>
+            </div>
             { favory?.recipe?.imagePath 
             ?(
               <div className="text-center">
@@ -137,7 +138,8 @@ const Favorites = () => {
             <h4 className="text-center">{favory.recipe.name}</h4>  
             <button 
              onClick={() =>showDeleteModal(favory.id)}
-            className="btn btn-outline-danger w-50 mt-5 d-flex flex-end">Delete favorite</button>            
+            className="btn btn-outline-danger w-50 mt-5 d-flex flex-end">Delete favorite</button> 
+            </div>           
           </div>
               )
           )

@@ -2,8 +2,8 @@ import logo from '../../../assets/images/logo4-3.png';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import { useContext } from 'react';
+import { ToastContainer } from 'react-toastify';
+import { useContext ,useState} from 'react';
 import { AuthContext } from './../../../Context/AuthContext';
 import { ToastContext } from './../../../Context/ToastContext';
 
@@ -11,7 +11,7 @@ import { ToastContext } from './../../../Context/ToastContext';
 const RequestResetPass = () => {
   let { baseUrl } = useContext(AuthContext);
   let { getToastValue } = useContext(ToastContext);
-
+  const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const {
         register, 
@@ -21,9 +21,11 @@ const RequestResetPass = () => {
 
     const onSubmit = async(data) => {
         console.log(data)
+        setIsLoading(true);
         await axios
           .post(`${baseUrl}Users/Reset/Request`, data)
           .then((response) => {
+            setIsLoading(false);
             console.log(response);
             navigate('/reset-pass');
 
@@ -32,8 +34,9 @@ const RequestResetPass = () => {
             }, 1);
           })
           .catch((error)=>{
+            setIsLoading(false);
               console.log(error);
-              getToastValue("error", error.response.data.message); 
+              getToastValue("error", error?.response?.data?.message); 
         });  
     }
 
@@ -70,8 +73,16 @@ const RequestResetPass = () => {
                 </div>
                 
                 <div className="form-group my-3">
-                  <button type="submit" className="btn btn-success w-100">
-                    Send
+                  <button type="submit" className={
+                      "btn btn-success w-100" + (isLoading ? " disabled" : " ")
+                    }
+                  >
+                    {isLoading == true ? (
+                      <i className="fas fa-spinner fa-spin"></i>
+                    ) : (
+                      "Send"
+                    )}
+                    
                   </button>
                 </div>            
               </form>

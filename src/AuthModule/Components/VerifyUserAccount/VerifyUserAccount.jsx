@@ -92,8 +92,16 @@ const VerifyUserAccount = () => {
                 )}
               </div>
               <div className="form-group my-3">
-                <button type="submit" className="btn btn-success w-100">
-                  Verify
+                <button type="submit" className={
+                      "btn btn-success w-100" + (isLoading ? " disabled" : " ")
+                    }
+                  >
+                    {isLoading == true ? (
+                      <i className="fas fa-spinner fa-spin"></i>
+                    ) : (
+                      " Verify"
+                    )}
+                 
                 </button>
               </div>
             </form>

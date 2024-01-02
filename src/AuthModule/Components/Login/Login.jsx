@@ -3,7 +3,7 @@ import logo from "../../../assets/images/logo4-3.png";
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "./../../../Context/AuthContext";
 import { ToastContext } from "./../../../Context/ToastContext";
 
@@ -11,6 +11,7 @@ const Login = () => {
   let { saveUserData, baseUrl } = useContext(AuthContext);
   let { getToastValue } = useContext(ToastContext);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register, //contient the data of the form
     handleSubmit,
@@ -19,12 +20,14 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setIsLoading(true);
     // console.log(data)
     // console.log(watch("email"))
     // console.log(watch("password"))
     await axios
       .post(`${baseUrl}Users/Login`, data)
       .then((response) => {
+        setIsLoading(false);
         setTimeout(() => {
           getToastValue("success", "Congratulations! You are logIn");
         }, 1000);
@@ -39,8 +42,9 @@ const Login = () => {
         navigate("/dashboard");
       })
       .catch((error) => {
+        setIsLoading(false);
         // console.log(error.response.data.message);
-        getToastValue("error", error.response.data.message);
+        getToastValue("error", error?.response?.data?.message);
       });
   };
 
@@ -104,8 +108,16 @@ const Login = () => {
                 </Link>
               </div>
               <div className="form-group my-3">
-                <button type="submit" className="btn btn-success w-100">
-                  Login
+                <button type="submit" className={
+                      "btn btn-success w-100" + (isLoading ? " disabled" : " ")
+                    }
+                  >
+                    {isLoading == true ? (
+                      <i className="fas fa-spinner fa-spin"></i>
+                    ) : (
+                      "Login"
+                    )}
+                 
                 </button>
               </div>
             </form>
